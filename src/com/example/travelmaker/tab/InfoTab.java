@@ -131,7 +131,7 @@ public class InfoTab extends Activity implements OnClickListener,
 
 		if (imgURL == null) {
 			imageMgr.displayImage(
-					"http://api.visitkorea.or.kr/TourAPI2_Guide/data/img/noimg.gif",
+					"http://i.imgur.com/5x7Hv9G.png",
 					image);
 		} else
 			imageMgr.displayImage(imgURL, image);

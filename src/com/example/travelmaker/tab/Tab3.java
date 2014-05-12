@@ -32,10 +32,7 @@ public class Tab3 extends Fragment {
 		public View onCreateView(LayoutInflater inflater, 
 				ViewGroup container, Bundle savedInstanceState) {
 			setHasOptionsMenu(true);
-			View view = inflater.inflate(R.layout.tab, null);
-
-			tv = (TextView) view.findViewById(R.id.tv2);
-			tv.setText("커뮤니티 페이지 입니다!");
+			View view = inflater.inflate(R.layout.community_info, null);
 			
 	    	return view;
 		}

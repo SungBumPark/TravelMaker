@@ -60,7 +60,7 @@ public class TourAdapter2 extends ArrayAdapter<TourData2> {
 			// holder.image.setVisibility(View.INVISIBLE);
 			Log.d(GPSInfoMain.DEBUG, tourData.getImageUrl() + "\n");
 			imageMgr.displayImage(
-					"http://api.visitkorea.or.kr/TourAPI2_Guide/data/img/noimg.gif",
+					"http://i.imgur.com/5x7Hv9G.png",
 					holder.image);
 		}
 		// 이미지가 있는 경우 동적으로 다운로드 하여 표시되도록 한다.

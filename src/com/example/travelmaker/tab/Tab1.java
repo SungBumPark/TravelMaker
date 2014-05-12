@@ -35,8 +35,8 @@ public class Tab1 extends Fragment{
 		public View onCreateView(LayoutInflater inflater, 
 				ViewGroup container, Bundle savedInstanceState) {
 			setHasOptionsMenu(true);
-			View view = inflater.inflate(R.layout.tab, null);
-			tv = (TextView) view.findViewById(R.id.tv2);
+			View view = inflater.inflate(R.layout.main_info, null);
+
 			
 		return view;
 	}

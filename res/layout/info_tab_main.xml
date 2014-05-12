@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/poiLinearLayout"
     android:layout_width="fill_parent"
@@ -17,7 +17,7 @@
             android:layout_height="fill_parent"
             android:orientation="vertical" >
 
-            <!-- 탑 메뉴 -->
+            <!-- ??메뉴 -->
 
             <FrameLayout
                 android:layout_width="fill_parent"
@@ -42,7 +42,8 @@
                     <ImageView
                         android:id="@+id/goIntroDataView_btn"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content" 
+                        android:visibility="gone"/>
 
                     <ImageView
                         android:id="@+id/goImgView_btn"

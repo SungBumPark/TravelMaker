@@ -141,8 +141,6 @@ public class TourListActivity extends ListActivity implements OnClickListener,
 
 		showProgressDialog();
 
-		//
-
 		contentId = tourList.get(position).getContentId();
 		Log.d(GPSInfoMain.DEBUG,
 			    "@contentId  " + contentId

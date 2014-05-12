@@ -18,7 +18,6 @@
             android:layout_gravity="center"
             android:layout_weight="4.23"
             android:gravity="center"
-            android:textAlignment="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#000007" />
     </LinearLayout>
@@ -75,13 +74,27 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="#000007" />
 
-            <ImageButton
-                android:id="@+id/mapButton"
-                android:layout_width="50dp"
-                android:layout_height="30dp"
-                android:layout_margin="5dp"
-                android:scaleType="fitXY" 
-                android:background="@drawable/map_btn"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="4.23" >
+
+                <ImageButton
+                    android:id="@+id/mapButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/map_btn"
+                    android:scaleType="fitXY" />
+
+                <ImageButton
+                    android:id="@+id/calenderButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/calender_btn"
+                    android:scaleType="fitXY" />
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>

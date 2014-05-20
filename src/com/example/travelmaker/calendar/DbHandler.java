@@ -44,7 +44,7 @@ public class DbHandler {
 		return result;
 	}
 
-	public long planlistInsert(int _travel, String day, String schedule,
+	public long planlistInsert(int _travel, int day, String schedule,
 			String strtime, String endtime, String frndnum, String memo,
 			String cost, String place, String trsprt, String opt_trsprt){
 		

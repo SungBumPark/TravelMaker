@@ -24,7 +24,29 @@
     <string name="app_id">8100D634:T77FC44E621CCB4</string>
     <string name="Time_text">Time</string>
     <string name="Day_text">Day</string>
-    
+    <string name="app_name_main">시간표</string>
+    <string name="main_make">시간표 만들기</string>
+    <string name="main_load">시간표 불러오기</string>
+    <string name="main_del">시간표 삭제하기</string>
+    <string name="main_bgchange">배경화면 변경하기</string>
+    <string name="main_help">도 움 말</string>
+    <string name="main_exit">종 료</string>
+    <string name="app_name_make">시간표 - 만들기</string>
+    <string name="make_time_count">교시 선택</string>
+    <string name="make_start_time">시작 시간</string>
+    <string name="make_time_space">시간 간격</string>
+    <string name="make_break_time">쉬는 시간</string>
+    <string name="make_button">만들기</string>
+    <string name="app_name_table">시간표 - 테이블</string>
+    <string name="app_name_update_time">시간표 - 시간 수정하기</string>
+    <string name="update_time_start">시작 시간</string>
+    <string name="update_time_end">종료 시간</string>
+    <string name="app_name_insert">시간표 - 내용 입력하기</string>
+    <string name="app_name_update">시간표 - 내용 수정하기</string>
+    <string name="app_name_explorer">시간표 - 파일찾기</string>
+    <string name="app_name_help">시간표 - 도움말</string>
+    <string name="common_use_ok_btn">확인</string>
+    <string name="common_use_cancel_btn">취소</string>
 </resources>
 
 

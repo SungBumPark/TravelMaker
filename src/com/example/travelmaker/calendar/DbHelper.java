@@ -29,7 +29,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		
 		String planlist_sql = "CREATE TABLE planlist("+
 								"_travel INTEGER NOT NULL,"+	//여행
-								"day TEXT NOT NULL,"+		//각 여행의 일자
+								"day INTERGER NOT NULL,"+		//각 여행의 일자
 								"schedule TEXT NOT NULL,"+	//일정 제목
 								"strtime TEXT NOT NULL,"+	//시작 시간
 								"endtime TEXT NOT NULL,"+	//종료 시간

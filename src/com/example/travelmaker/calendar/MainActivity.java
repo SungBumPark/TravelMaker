@@ -217,6 +217,8 @@ public class MainActivity extends ListActivity implements OnClickListener{
 				ArrayAdapter adapter = 
 						new ArrayAdapter(this, android.R.layout.simple_list_item_1, DBdata);
 				setListAdapter(adapter);
+				setListAdapter(adapter);
+			
 
 				/* 성범오빠꺼 scrap TABEL 확인용
 				 * cursor = dbHandler.selectAll("scrap");

@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="14"
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -110,6 +110,12 @@
             android:screenOrientation="portrait" >
             
         </activity>
+         <activity
+            android:name="com.example.travelmaker.plan.RegisterPlanActivity"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait" >
+            
+        </activity>
    
         <receiver
             android:name="net.viralpatel.network.NetworkChangeReceiver"
@@ -120,6 +126,42 @@
             </intent-filter>
         </receiver>
         
+        <activity
+            android:name="com.example.travelmaker.timetable.MainActivity"
+            android:label="@string/app_name_main" >
+        </activity>
+        <activity android:name="com.example.travelmaker.timetable.MakeActivity"	android:label="@string/app_name_make"
+        	android:screenOrientation="portrait"	android:configChanges="orientation|keyboardHidden"/>
+        <activity android:name="com.example.travelmaker.timetable.TableActivity"	android:label="@string/app_name_table"
+        	android:screenOrientation="portrait"	android:configChanges="orientation|keyboardHidden"/>
+        <activity android:name="com.example.travelmaker.timetable.UpdateTimeActivity"	android:label="@string/app_name_update_time"
+        	android:screenOrientation="portrait"	android:configChanges="orientation|keyboardHidden"/>
+        <activity android:name="com.example.travelmaker.timetable.InsertActivity"	android:label="@string/app_name_insert"
+        	android:screenOrientation="portrait"	android:configChanges="orientation|keyboardHidden"/>
+        <activity android:name="com.example.travelmaker.timetable.UpdateActivity"	android:label="@string/app_name_update"
+        	android:screenOrientation="portrait"	android:configChanges="orientation|keyboardHidden"/>
+        <activity android:name="com.example.travelmaker.timetable.ExplorerActivity"	android:label="@string/app_name_make"
+        	android:screenOrientation="portrait"	android:configChanges="orientation|keyboardHidden"/>
+        <activity android:name="com.example.travelmaker.timetable.HelpActivity"	android:label="@string/app_name_help"
+        	android:screenOrientation="portrait"	android:configChanges="orientation|keyboardHidden"/>
+        
     </application>
 
 </manifest>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

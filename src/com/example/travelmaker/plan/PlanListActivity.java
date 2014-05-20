@@ -6,12 +6,18 @@ import java.util.Date;
 import java.util.Locale;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.travelmaker.calendar.DbHandler;
 import com.example.travelmaker.tour.gpsinfomain.*;
@@ -20,17 +26,17 @@ public class PlanListActivity extends Activity{
 	LinearLayout linear;
 	DbHandler dbHandler;
 	Cursor cursor = null;
-	int id;
+	int id;									//(DB) travel에서 가져온 값
 	int days;								//(DB) travel에서 가져온 값
 	String title;							//(DB) travel에서 가져온 값
 	String dpday;							//(DB) travel에서 가져온 값
 	Date Dpday;								//dpday값을 날짜형식으로 변환한 값(String to Date)
 	Date Today = new Date();				//오늘 날짜를 받아 Dpday와 같은 날짜형식으로 변환한 값
-	
+
 	Button[] btndays;
 	Button planAll;
 	TextView txtToday, txtDday; 
-	
+
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_plan_list);
@@ -38,6 +44,10 @@ public class PlanListActivity extends Activity{
 		planAll = (Button) findViewById(R.id.planAll);
 		txtToday = (TextView) findViewById(R.id.Today);
 		txtDday = (TextView) findViewById(R.id.Dday);
+		
+		planAll.setOnClickListener(btnClicked);
+		
+		
 		
 		/*PlanMain.class로 부터 데이터(travel TABLE의 _id FIELD) 받음*/
 		Intent intent2 = getIntent();
@@ -58,20 +68,20 @@ public class PlanListActivity extends Activity{
 			dpday = cursor.getString(2);	//(DB) _id에 해당하는 출발날짜 정보 담김
 			lgdays = cursor.getLong(3);		//(DB) 여행일 수 정보 담김
 		}	
-		
+
 		/*날짜형식을 yyyy년mm월mm일로 설정*/
 		SimpleDateFormat statusBar = 
 				new SimpleDateFormat("yyyy년 MM월 dd일", Locale.KOREA);
 		String bar = statusBar.format(Today);	//Date to String
 		/*오늘 날짜 상태바에 표시*/
 		txtToday.setText("오늘은 "+bar);
-		
-		
+
+
 		/*날짜형식을 yyyymmdd로 설정*/
 		SimpleDateFormat formater = 
 				new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
 		String day = formater.format(Today);	//Date to String
-		
+
 		/*String to Date 형변환으로 오늘날짜와 출발날짜를 Date형식으로 변환*/
 		try {
 			Today = formater.parse(day);		
@@ -80,26 +90,26 @@ public class PlanListActivity extends Activity{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		long dDay = dDay();						//dDay()함수 호출해서 D-DAY 계산
-		
+
 		String Dday;
 		if(dDay > 0)							//여행 전 D-여행까지남은일수
 			Dday = "D-" + Long.toString(dDay);
-		
+
 		else if(dDay < 0)						//여행이 시작된 경우 D+지난일수
 			Dday = "D+" + Long.toString(Math.abs(dDay));
-		
+
 		else									//여행 출발 당일날
 			Dday = "오늘입니다 D-0";
-		
+
 		/*String으로 D-DAY출력 Long to String*/
-		txtDday.setText(title+" "+Dday);
+		txtDday.setText(id+" "+Dday);
 		days = (int)lgdays;					//Long to int 형변환
 		btndays = new Button[days];			//여행일 수 만큼 버튼동적생성
 		createBtn(days);					//동적생성된 버튼마다 layout적용
 
-		
+
 
 	}
 
@@ -120,12 +130,13 @@ public class PlanListActivity extends Activity{
 			btndays[i-1] = new Button(this);
 			btndays[i-1].setText(i+"일차 여행입니다.");
 			btndays[i-1].setId(i);
+			btndays[i-1].setOnLongClickListener(btnLongClicked);
 			btndays[i-1].setHeight(50);
 			btndays[i-1].setWidth(50);
-			
+
 			if( ((i-1)%7)==0 )
 			{
-			btndays[i-1].setBackgroundResource(R.drawable.list_bg);
+				btndays[i-1].setBackgroundResource(R.drawable.list_bg);
 			}
 			else if( ((i-1)%7)==1 )
 			{
@@ -154,15 +165,41 @@ public class PlanListActivity extends Activity{
 			linear.addView(btndays[i-1]);	
 		}
 	}
+	
+	OnClickListener btnClicked = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+
+			/*해당 ICON의 ID 전달(DB _id)*/
+			Intent intent1 = 
+					new Intent(PlanListActivity.this, com.example.travelmaker.timetable.MainActivity.class);
+			intent1.putExtra("_travel", id);
+			intent1.putExtra("day", days);
+			
+			startActivity(intent1);
+
+		}
+	};
+	
+	
+	
+	OnLongClickListener btnLongClicked = new OnLongClickListener() {
+		@Override
+		public boolean onLongClick(View v) {
+			//id(_travel)외래키, v.getId()(day)
+			
+			/*해당 버튼의 여행(_travel)과 일자(day) 정보 넘김
+			 * 부산여행 페이지의 2일차 여행입니다 길게클릭 시 
+			 * travel TABLE에서 부산여행(title) 레코드의 _id와 
+			 * 2일차 이므로 일자로 2를 넘김(10일차는 일자가 10)*/
+			Intent intent1 = 
+					new Intent(PlanListActivity.this, RegisterPlanActivity.class);
+			intent1.putExtra("_travel", id);
+			intent1.putExtra("day", v.getId());
+			startActivity(intent1);
+			
+			return true;
+		}
+
+	};
 }
-/*
-<TextView
-android:id="@+id/Dday"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:background="#FAED22"
-android:gravity="left"
-android:paddingLeft="10dp"
-android:singleLine="true"
-android:textAppearance="?android:attr/textAppearanceMedium"
-android:textColor="#000000" />*/

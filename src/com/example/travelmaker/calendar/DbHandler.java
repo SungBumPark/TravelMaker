@@ -67,7 +67,7 @@ public class DbHandler {
 		return result;
 	}
 	
-	public long scrapInsert(String title, String contentId, 
+	public long scrapInsert(String title, int contentId, 
 			String homepage, String imageUrl, String contentTypeId, String addr1, String addr2, 
 			String overview, String tel, String zipcode, String EX, String EY){
 		
@@ -143,6 +143,13 @@ public class DbHandler {
 	public void delete(String table, int id){
 		
 		String sql = "DELETE FROM " + table + " WHERE _id = " + id;
+		db.execSQL(sql);
+		
+		Log.i("db", table+" delete()");
+	}
+	
+	public void deleteScrap(String table, int contentId){
+		String sql = "DELETE FROM " + table + " WHERE contentId = " + contentId;
 		db.execSQL(sql);
 		
 		Log.i("db", table+" delete()");

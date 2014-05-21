@@ -5,9 +5,8 @@ import java.util.Locale;
 import com.example.travelmaker.main.*;
 import com.example.travelmaker.tour.gpsinfomain.*;
 
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
-import android.content.Context;
+import android.app.*;
+import android.content.*;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -15,8 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.*;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.view.*;
 
 public class TabActivity extends FragmentActivity implements
 		ActionBar.TabListener {
@@ -76,8 +74,32 @@ public class TabActivity extends FragmentActivity implements
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+		
+		
+		
 	}
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		//return super.onKeyDown(keyCode, event);
+		switch(keyCode){
+		case KeyEvent.KEYCODE_BACK:
+			new AlertDialog.Builder(this).
+			setTitle("Travel Maker").setMessage("종료하시겠습니까??").
+			setNegativeButton("확인", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					moveTaskToBack(true);
+					finish();
+				}
+			}).setPositiveButton("취소", null).show();
+			
+		}
+		return true;
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

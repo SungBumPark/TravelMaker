@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class DbHelper extends SQLiteOpenHelper {
 
-	private static final String DB_NAME = "DB140520";
+	private static final String DB_NAME = "MYDB140523";
 	private static final int DB_VERSION = 1;
 
 	public DbHelper(Context context) {
@@ -43,7 +43,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		
 		String scrap_sql = "CREATE TABLE scrap("+
 				"title TEXT,"+
-				"contentId TEXT,"+
+				"contentId INTEGER PRIMARY KEY AUTOINCREMENT,"+
 				"homepage TEXT,"+
 				"imageUrl TEXT," +
 				"contentTypeId TEXT,"+

@@ -6,18 +6,16 @@ import java.util.Date;
 import java.util.Locale;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.example.travelmaker.calendar.DbHandler;
 import com.example.travelmaker.tour.gpsinfomain.*;
@@ -104,7 +102,7 @@ public class PlanListActivity extends Activity{
 			Dday = "오늘입니다 D-0";
 
 		/*String으로 D-DAY출력 Long to String*/
-		txtDday.setText(id+" "+Dday);
+		txtDday.setText(title+" "+Dday);
 		days = (int)lgdays;					//Long to int 형변환
 		btndays = new Button[days];			//여행일 수 만큼 버튼동적생성
 		createBtn(days);					//동적생성된 버튼마다 layout적용
@@ -130,7 +128,7 @@ public class PlanListActivity extends Activity{
 			btndays[i-1] = new Button(this);
 			btndays[i-1].setText(i+"일차 여행입니다.");
 			btndays[i-1].setId(i);
-			btndays[i-1].setOnLongClickListener(btnLongClicked);
+			btndays[i-1].setOnClickListener(btnClicked);
 			btndays[i-1].setHeight(50);
 			btndays[i-1].setWidth(50);
 
@@ -169,37 +167,46 @@ public class PlanListActivity extends Activity{
 	OnClickListener btnClicked = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-
-			/*해당 ICON의 ID 전달(DB _id)*/
+			
+			boolean allFlag = true;
 			Intent intent1 = 
 					new Intent(PlanListActivity.this, com.example.travelmaker.timetable.MainActivity.class);
+			
+			if(v.getId()==R.id.planAll){
+				
+			intent1.putExtra("flag", allFlag);
+			/*해당 ICON의 ID 전달(DB _id)*/
 			intent1.putExtra("_travel", id);
+			intent1.putExtra("title", title);
 			intent1.putExtra("day", days);
+			}
 			
+			else{
+				
+				allFlag = false;
+				intent1.putExtra("flag", allFlag);
+				intent1.putExtra("_travel", id);
+				intent1.putExtra("dayID", v.getId());
+				intent1.putExtra("title", title);
+				intent1.putExtra("day", days);
+			}
+			
+			allFlag = true;
 			startActivity(intent1);
-
 		}
 	};
 	
-	
-	
-	OnLongClickListener btnLongClicked = new OnLongClickListener() {
-		@Override
-		public boolean onLongClick(View v) {
-			//id(_travel)외래키, v.getId()(day)
-			
-			/*해당 버튼의 여행(_travel)과 일자(day) 정보 넘김
-			 * 부산여행 페이지의 2일차 여행입니다 길게클릭 시 
-			 * travel TABLE에서 부산여행(title) 레코드의 _id와 
-			 * 2일차 이므로 일자로 2를 넘김(10일차는 일자가 10)*/
-			Intent intent1 = 
-					new Intent(PlanListActivity.this, RegisterPlanActivity.class);
-			intent1.putExtra("_travel", id);
-			intent1.putExtra("day", v.getId());
-			startActivity(intent1);
-			
-			return true;
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		//return super.onKeyDown(keyCode, event);
+		switch(keyCode){
+		case KeyEvent.KEYCODE_BACK:
+			finish();
 		}
-
-	};
+		
+		return true;
+	}
+	
+	
+	
 }

@@ -286,6 +286,8 @@ public class TourListActivity2 extends ListActivity implements OnClickListener,
 		intent.putExtra("mapy", result.getMapY());
 		Log.d(GPSInfoMain.DEBUG, "#20 "
 				+ result.getMapY());
+		Log.d(GPSInfoMain.DEBUG, "#20 "
+				+ result.getHomepage());
 		intent.putExtra("contentTypeId", contentTypeId);
 		intent.putExtra("contentId", contentId);
 		intent.putExtra("DO_TRACKING", DO_TRACKING);

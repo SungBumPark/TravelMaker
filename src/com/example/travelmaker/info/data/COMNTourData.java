@@ -6,15 +6,15 @@ public class COMNTourData implements Serializable{
 
 	String title; // 제목
 	String imageUrl = null; // 이미지 URL
-	String zipCode;
-	String address1;
-	String address2;
-	String mapX;
-	String mapY;
-	String homepage;
-	String tel;
-	String overView;
-	COMNTourData result;
+	String zipCode= null;
+	String address1= null;
+	String address2= null;
+	String mapX= null;
+	String mapY= null;
+	String homepage= null;
+	String tel= null;
+	String overView= null;
+	COMNTourData result= null;
 
 
 	public COMNTourData getResult() {

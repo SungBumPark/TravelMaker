@@ -52,7 +52,7 @@ public class InsertActivity extends Activity implements OnClickListener, OnSeekB
 		
 		((RelativeLayout) findViewById(R.id.insertBackground)).setBackgroundDrawable( MainActivity.GetBackgroundImage() );
 		((TextView) findViewById(R.id.insertTitleText)).setText(getIntent().getExtras().getString( define.INTENT_KEY_INSERTTITLE ));
-		((TextView) findViewById(R.id.insertContentText)).setText("내용을 입력 하세요.");
+		((TextView) findViewById(R.id.insertContentText)).setText("일정을 등록해주세요");
 		((TextView) findViewById(R.id.insertRedColorText)).setText("RED");
 		((TextView) findViewById(R.id.insertGreenColorText)).setText("GREEN");
 		((TextView) findViewById(R.id.insertBlueColorText)).setText("BLUE");

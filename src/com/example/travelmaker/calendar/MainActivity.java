@@ -12,12 +12,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.TimePicker;
-import android.widget.Toast;
+import android.widget.*;
 
 public class MainActivity extends ListActivity implements OnClickListener{
 	private View progressDialog;
@@ -213,9 +208,12 @@ public class MainActivity extends ListActivity implements OnClickListener{
 
 				cursor.close();
 
+				
 				/*배열을 화면에 출력*/
 				ArrayAdapter adapter = 
 						new ArrayAdapter(this, android.R.layout.simple_list_item_1, DBdata);
+				
+				
 				setListAdapter(adapter);
 				setListAdapter(adapter);
 			

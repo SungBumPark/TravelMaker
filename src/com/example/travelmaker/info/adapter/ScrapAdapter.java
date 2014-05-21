@@ -49,7 +49,28 @@ public class ScrapAdapter extends ArrayAdapter<ScrapTourData> {
 		} else
 			holder = (ViewHolder) view.getTag();
 
-		holder.title.setText(tourData.getTitle());
+		switch(Integer.parseInt(datalist.get(position).getContentTypeId())){
+		case 12:
+			holder.title.setText(tourData.getTitle() + "   (°ü±¤)");
+			break;
+		case 14:
+			holder.title.setText(tourData.getTitle() + "   (¹®È­)");
+			break;
+		case 25:
+			holder.title.setText(tourData.getTitle() + "   (ÄÚ½º)");
+			break;
+		case 28:
+			holder.title.setText(tourData.getTitle() + "   (·¹Æ÷Ã÷)");
+			break;
+		case 32:
+			holder.title.setText(tourData.getTitle() + "   (¼÷¹Ú)");
+			break;
+		case 39:
+			holder.title.setText(tourData.getTitle() + "   (À½½Ä)");
+			break;
+		
+		}
+		
 
 		if (tourData.getImageUrl() == null)
 			Log.d(GPSInfoMain.DEBUG, "null" + "\n");

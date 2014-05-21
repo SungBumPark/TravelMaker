@@ -5,12 +5,14 @@
 
 package com.example.travelmaker.timetable;
 
+
 import com.example.travelmaker.tour.gpsinfomain.R;
 import com.example.travelmaker.tour.gpsinfomain.R.string;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import android.R.integer;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -39,10 +41,18 @@ import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
+import android.widget.Toast;
 public class TableActivity extends Activity implements OnItemClickListener {
 	
-	private final int COLUMN_COUNT	= 10;
+	Intent intent;
+	/*intent한 값 저장*/
+	boolean pFlag;
+	int pTravelID, pDayID, pDay;
+	String pTitle;
+	
+	String save_name;
+
+	private int COLUMN_COUNT;
 	private int mTimeCount;
 	private int mStartTimeHour;
 	private int mStartTimeMin;
@@ -50,7 +60,6 @@ public class TableActivity extends Activity implements OnItemClickListener {
 	private int mBreakTime;
 	private String mUpdateTimeSendString, mInsertTitleSendString, mUpdateContentSendString;
 	private int mUpdateTimePosition, mInsertedItemPosition, mUpdatedItemPosition;
-	
 	private GridView mTimeTable;
 	private ListAdapter mAdapter;
 	private String mItemTextArray[];
@@ -99,20 +108,27 @@ public class TableActivity extends Activity implements OnItemClickListener {
 		public View getView(int position, View oldView, ViewGroup parent) {
 			// TODO Auto-generated method stub
 			TextView items = new TextView(mContext);
-			items.setHeight(mDisplayHeight/16);				// 각 아이템 높이
+			items.setHeight(mDisplayHeight/10);	// 각 아이템 높이
 			items.setGravity(Gravity.CENTER);
 			if( mStrText[position] == null )
 				items.setText(mStrText[position]);
 			else
 			{
-				String ellipsizeStr = TextUtils.ellipsize(mStrText[position], mPaint, mDisplayWidth / COLUMN_COUNT, TruncateAt.START).toString(); 
+				String ellipsizeStr = 
+						TextUtils.ellipsize(mStrText[position], 
+											mPaint,
+											mDisplayWidth / COLUMN_COUNT, 
+											TruncateAt.START).toString(); 
 				items.setText(ellipsizeStr);
 			}
-			if( (position < COLUMN_COUNT) )				items.setTextSize(20);
-			else if( (position % COLUMN_COUNT == 0) )	items.setTextSize(16);
-			else										items.setTextSize(15);
-			//items.setBackgroundColor(Color.GRAY);
-			items.setBackgroundColor(Color.argb(mAlphaColorArray[position], mRedColorArray[position], mGreenColorArray[position], mBlueColorArray[position]));
+			if( (position < COLUMN_COUNT) )				items.setTextSize(20);	//요일 글씨크기
+			else if( (position % COLUMN_COUNT == 0) )	items.setTextSize(16);	//시간 글씨크기
+			else										items.setTextSize(15);	//내용 글씨크기
+			
+			items.setBackgroundColor(Color.argb(mAlphaColorArray[position], 
+												mRedColorArray[position], 
+												mGreenColorArray[position], 
+												mBlueColorArray[position]));
 
 			return items;
 		}
@@ -125,6 +141,32 @@ public class TableActivity extends Activity implements OnItemClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_table);
 		
+		intent = getIntent();
+		pFlag = intent.getExtras().getBoolean("pFlag");
+		
+		/*전체일정보기*/
+		if(pFlag){
+			
+			pTravelID = intent.getExtras().getInt("pTravelID");	//id
+			pTitle = intent.getExtras().getString("pTitle");		//여행제목
+			pDay = intent.getExtras().getInt("pDay");			//여행일수
+			COLUMN_COUNT = pDay + 1;
+			save_name = pTitle;
+			Toast.makeText(this, save_name, Toast.LENGTH_SHORT).show();
+		}
+		
+		/*하루일정보기*/
+		else{
+			
+			pDay = 1;
+			pTravelID = intent.getExtras().getInt("pTravelID");	//id
+			pDayID = intent.getExtras().getInt("pDayID");		//여행일수 ID
+			pTitle = intent.getExtras().getString("pTitle");		//여행제목
+			COLUMN_COUNT = pDay + 1;
+			save_name = pTitle+pDayID;
+			Toast.makeText(this, save_name, Toast.LENGTH_SHORT).show();
+			//Toast.makeText(this, pTitle+"	"+pDayID+"일차", Toast.LENGTH_SHORT).show();
+		}
 		// Received Intent Value;
 		GetIntentValue();
 		// Initialize;
@@ -133,8 +175,9 @@ public class TableActivity extends Activity implements OnItemClickListener {
 	
 	private void GetIntentValue() {
 		// TODO Auto-generated method stub
-		Intent intent = getIntent();
+		
 		mTimeCount = intent.getExtras().getInt( define.INTENT_KEY_TIMECOUNT );
+		//mTimeCount = initTime.mTimeCountNumberPicker.getValue();
 		mRedColorArray = new int[(mTimeCount + 1) * COLUMN_COUNT];
 		mGreenColorArray = new int[(mTimeCount + 1) * COLUMN_COUNT];
 		mBlueColorArray = new int[(mTimeCount + 1) * COLUMN_COUNT];
@@ -223,19 +266,13 @@ public class TableActivity extends Activity implements OnItemClickListener {
 	private void Init() {
 		// TODO Auto-generated method stub
 		((RelativeLayout) findViewById(R.id.tableBackground)).setBackgroundDrawable( MainActivity.GetBackgroundImage() );
-
 		// Default Text;
-		mItemTextArray[1] = "1일";
-		mItemTextArray[2] = "2일";
-		mItemTextArray[3] = "3일";
-		mItemTextArray[4] = "4일";
-		mItemTextArray[5] = "5일";
-		mItemTextArray[6] = "6일";
-		mItemTextArray[7] = "7일";
-		mItemTextArray[8] = "8일";
-		mItemTextArray[9] = "9일";
-		
-		
+		if(pFlag)
+			for(int i = 1; i<COLUMN_COUNT; i++)
+				mItemTextArray[i] = i+"일차";
+		else
+			mItemTextArray[1] = pDayID+"일차";			
+	
 		for( int idx = COLUMN_COUNT; idx < mItemTextArray.length; ++idx )
 		{
 			if( idx % COLUMN_COUNT == 0 && mItemTextArray[idx] == null )
@@ -265,10 +302,9 @@ public class TableActivity extends Activity implements OnItemClickListener {
 		
 		String strArray[] = new String[mItemTextArray.length];
 		for( int idx = 0; idx < mItemTextArray.length; ++idx )
-			strArray[idx] = ( (idx >= COLUMN_COUNT) && (idx % COLUMN_COUNT == 0) ) ? GetTimeString(idx / COLUMN_COUNT) + "교시" : mItemTextArray[idx];
-		
+			strArray[idx] = ( (idx >= COLUMN_COUNT) && (idx % COLUMN_COUNT == 0) ) ? GetTimeString((idx/COLUMN_COUNT)+5) + "시" : mItemTextArray[idx];
+			
 		mTimeTable =    (GridView) findViewById(R.id.timeTable);
-		//mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, str);
 		mTimeTable.setNumColumns(COLUMN_COUNT);
 		mAdapter = new ScheduleAdapter(this, strArray);
 		mTimeTable.setAdapter( mAdapter );
@@ -278,7 +314,7 @@ public class TableActivity extends Activity implements OnItemClickListener {
 	
 	private String GetTimeString( int nValue ) {
 		// TODO Auto-generated method stub
-		String str = "";
+		String str = " ";
 		if( nValue < 10 )
 			str = "0" + nValue;
 		else
@@ -293,8 +329,8 @@ public class TableActivity extends Activity implements OnItemClickListener {
 		{
 			new AlertDialog.Builder(this)
 			.setIcon(R.drawable.ic_launcher)
-			.setTitle("요일")
-		    .setMessage(mItemTextArray[position] + "요일 입니다.")
+			.setTitle("여행 일차")
+		    .setMessage(mItemTextArray[position] + " 여행입니다.")
 			.setPositiveButton(string.common_use_ok_btn, null)
 			.show();
 		}
@@ -305,10 +341,9 @@ public class TableActivity extends Activity implements OnItemClickListener {
 			
 			new AlertDialog.Builder(this)
 			.setIcon(R.drawable.ic_launcher)
-			.setTitle(GetTimeString(position / COLUMN_COUNT) + "교시")
-		    .setMessage("선택하신 " + GetTimeString(position / COLUMN_COUNT) + "교시는 " + mItemTextArray[position] + "시간 입니다.\n" + 
-		    			"수정 하시겠습니까?")
-		    .setNegativeButton(string.common_use_ok_btn, new DialogInterface.OnClickListener() {
+			.setTitle("여행 시각")
+		    .setMessage("선택하신 시각은 "+mItemTextArray[position]+"입니다.")
+		    /*.setNegativeButton(string.common_use_ok_btn, new DialogInterface.OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -324,22 +359,22 @@ public class TableActivity extends Activity implements OnItemClickListener {
 					intent.putExtra(define.INTENT_KEY_ENDTIMEMIN, tokenedValue[3]);
 					startActivityForResult(intent, define.INTENT_REQUEST_UPDATETIME);
 				}
-			})
-			.setPositiveButton(string.common_use_cancel_btn, null)
+			})*/
+			.setNegativeButton(string.common_use_cancel_btn, null)
 			.show();
 		}
 		else
 		{
 			if( mItemTextArray[position] == null )
 			{
-				mInsertTitleSendString = mItemTextArray[position % COLUMN_COUNT] + "요일 " + GetTimeString(position / COLUMN_COUNT) + "교시\n" +
+				mInsertTitleSendString = mItemTextArray[position % COLUMN_COUNT] + " " + GetTimeString((position / COLUMN_COUNT)+5) + "시\n" +
 										 "(" + mItemTextArray[COLUMN_COUNT * (position / COLUMN_COUNT)] + ")";
 				mInsertedItemPosition = position;
 				
 				new AlertDialog.Builder(this)
 				.setIcon(R.drawable.ic_launcher)
-				.setTitle("입력하기")
-			    .setMessage(mItemTextArray[position % COLUMN_COUNT] + "요일 " + GetTimeString(position / COLUMN_COUNT) + "교시에 값을 입력하시겠습니까?")
+				.setTitle("일정 등록")
+			    .setMessage(mItemTextArray[position % COLUMN_COUNT] + " " + GetTimeString((position / COLUMN_COUNT)+5) + "시에 값을 입력하시겠습니까?")
 			    .setNegativeButton(string.common_use_ok_btn, new DialogInterface.OnClickListener() {
 					
 					@Override
@@ -355,15 +390,15 @@ public class TableActivity extends Activity implements OnItemClickListener {
 			}
 			else
 			{
-				mInsertTitleSendString = mItemTextArray[position % COLUMN_COUNT] + "요일 " + GetTimeString(position / COLUMN_COUNT) + "교시\n" +
+				mInsertTitleSendString = mItemTextArray[position % COLUMN_COUNT] + " " + GetTimeString((position / COLUMN_COUNT)+5) + "시\n" +
 						 "(" + mItemTextArray[COLUMN_COUNT * (position / COLUMN_COUNT)] + ")";
 				mUpdateContentSendString = mItemTextArray[position];
 				mUpdatedItemPosition = position;
 				
 				new AlertDialog.Builder(this)
 				.setIcon(R.drawable.ic_launcher)
-				.setTitle("수정하기")
-			    .setMessage(mItemTextArray[position % COLUMN_COUNT] + "요일 " + GetTimeString(position / COLUMN_COUNT) + "교시에 입력된 값은 " + "'" + mItemTextArray[position] + "'" + "입니다.\n" +
+				.setTitle("일정 수정")
+			    .setMessage(mItemTextArray[position % COLUMN_COUNT] + " " + GetTimeString((position / COLUMN_COUNT)+5) + "시에 입력된 값은 " + "'" + mItemTextArray[position] + "'" + "입니다.\n" +
 			    			"수정하시겠습니까?")
 			    .setNegativeButton(string.common_use_ok_btn, new DialogInterface.OnClickListener() {
 					
@@ -428,6 +463,7 @@ public class TableActivity extends Activity implements OnItemClickListener {
 				mBlueColorArray[mUpdatedItemPosition] = colorValue[2];
 				mAlphaColorArray[mUpdatedItemPosition] = colorValue[3];
 				// Invalidate;
+	
 				String strArray[] = new String[mItemTextArray.length];
 				for( int idx = 0; idx < mItemTextArray.length; ++idx )
 					strArray[idx] = ( (idx >= COLUMN_COUNT) && (idx % COLUMN_COUNT == 0) ) ? GetTimeString(idx / COLUMN_COUNT) + "교시" : mItemTextArray[idx];
@@ -456,18 +492,19 @@ public class TableActivity extends Activity implements OnItemClickListener {
 			Context mContext = getApplicationContext();
 			LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
 			final View layout = inflater.inflate(R.layout.dialog_save,(ViewGroup) findViewById(R.id.saveDialog));
+			((TextView) layout.findViewById(R.id.saveDialogText)).setText("'"+save_name+"'을 저장합니다.");
 			new AlertDialog.Builder(this)
 			.setIcon(R.drawable.ic_launcher)
-			.setTitle("저장하기")
+			.setTitle("일정 저장")
 			.setView(layout)
 			.setNegativeButton(string.common_use_ok_btn, new DialogInterface.OnClickListener() {
-				
-				String save_name = "";
+		
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
-					save_name = ((EditText) layout.findViewById(R.id.saveDialogEdit)).getText().toString();
+					//((TextView) layout.findViewById(R.id.saveDialogText)).setText(save_name+"을 저장합니다.");
+					//save_name = ((EditText) layout.findViewById(R.id.saveDialogEdit)).getText().toString();
 					ArrayList<String> items = new ArrayList<String>();
 					Cursor cursor = MainActivity.GetDatabase().selectName(MainActivity.GetSQLiteDatabase());
 					while( cursor.moveToNext() )
@@ -480,7 +517,7 @@ public class TableActivity extends Activity implements OnItemClickListener {
 					{
 						new AlertDialog.Builder(TableActivity.this)
 						.setIcon(R.drawable.ic_launcher)
-						.setTitle("저장하기")
+						.setTitle("일정 저장")
 						.setMessage( "'" + save_name + "'와 중복된 이름이 있습니다.\n" +
 									"그래도 저장하시겠습니까?")
 						.setNegativeButton(string.common_use_ok_btn, new DialogInterface.OnClickListener() {
@@ -552,7 +589,7 @@ public class TableActivity extends Activity implements OnItemClickListener {
 											else
 												content += "," + mItemTextArray[idx];
 								MainActivity.GetDatabase().insertValue(MainActivity.GetSQLiteDatabase(), save_name, time_count, time, content_count, content_locate, content_red, content_green, content_blue, content_alpha, content);
-								MainActivity.ShowPopup("수정하기", "수정되었습니다.", TableActivity.this);
+								MainActivity.ShowPopup("일정 수정", "수정되었습니다.", TableActivity.this);
 							}
 						})
 						.setPositiveButton(string.common_use_cancel_btn, null)
@@ -623,7 +660,7 @@ public class TableActivity extends Activity implements OnItemClickListener {
 									else
 										content += "," + mItemTextArray[idx];
 						MainActivity.GetDatabase().insertValue(MainActivity.GetSQLiteDatabase(), save_name, time_count, time, content_count, content_locate, content_red, content_green, content_blue, content_alpha, content);
-						MainActivity.ShowPopup("저장하기", "저장되었습니다.", TableActivity.this);
+						MainActivity.ShowPopup("일정 저장", "저장되었습니다.", TableActivity.this);
 					}
 				}
 			})

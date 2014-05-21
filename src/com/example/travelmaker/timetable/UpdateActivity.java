@@ -47,7 +47,7 @@ public class UpdateActivity extends Activity implements OnClickListener, OnSeekB
 		((RelativeLayout) findViewById(R.id.updateBackground)).setBackgroundDrawable( MainActivity.GetBackgroundImage() );
 		
 		((TextView) findViewById(R.id.updateTitleText)).setText(getIntent().getExtras().getString( define.INTENT_KEY_UPDATETITLE ));
-		((TextView) findViewById(R.id.updateContentText)).setText("내용을 입력 하세요.");
+		((TextView) findViewById(R.id.updateContentText)).setText("일정을 등록하세요");
 		mUpdatedContent = getIntent().getExtras().getString( define.INTENT_KEY_UPDATECONTENT );
 		if( mUpdatedContent.equals(" ") )
 			mUpdatedContent = "";

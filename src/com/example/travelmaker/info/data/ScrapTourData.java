@@ -2,18 +2,18 @@ package com.example.travelmaker.info.data;
 
 public class ScrapTourData {
 
-	String title;
-	String contentId;
-	String homepage;
-	String imageUrl;
-	String contentTypeId;
-	String addr1;
-	String addr2;
-	String overview;
-	String tel;
-	String zipcode;
-	String EX;
-	String EY;
+	String title=null;
+	String contentId=null;
+	String homepage=" ";
+	String imageUrl=" ";
+	String contentTypeId=null;
+	String addr1=null;
+	String addr2=" ";
+	String overview=null;
+	String tel=" ";
+	String zipcode=" ";
+	String EX=null;
+	String EY=null;
 	
 	
 	public String getTitle() {

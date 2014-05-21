@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import com.example.travelmaker.tour.gpsinfomain.R;
 import com.example.travelmaker.tour.gpsinfomain.R.string;
 
+import android.R.integer;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -29,6 +30,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
 
@@ -37,6 +39,11 @@ public class MainActivity extends Activity implements OnClickListener {
 	private int mSelectedItem = -1;
 	private String mListItems[] = null;
 	private static Drawable mBackgroundImg;
+	
+	/*intent한 값 저장*/
+	boolean pFlag = true;
+	int pTravelID, pDayID, pDay;
+	String pTitle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +85,26 @@ public class MainActivity extends Activity implements OnClickListener {
 		if( mHelper.selectAll( mDb ) == null )
 		{
 			mHelper.onUpgrade( mDb, 0, 0 );
+		}
+		
+		Intent planTotime = getIntent();
+		pFlag = planTotime.getExtras().getBoolean("flag");
+		
+		/*전체일정보기*/
+		if(pFlag){
+			
+			pTravelID = planTotime.getExtras().getInt("_travel");	//id
+			pTitle = planTotime.getExtras().getString("title");		//여행제목
+			pDay = planTotime.getExtras().getInt("day");			//여행일수
+			Toast.makeText(this, pTitle, Toast.LENGTH_SHORT).show();
+		}
+		/*하루일정보기*/
+		else{
+			
+			pTravelID = planTotime.getExtras().getInt("_travel");	//id
+			pDayID = planTotime.getExtras().getInt("dayID");		//여행일수 ID
+			pTitle = planTotime.getExtras().getString("title");		//여행제목
+			Toast.makeText(this, pTitle+"	"+pDayID+"일차", Toast.LENGTH_SHORT).show();
 		}
 	}
 	
@@ -151,6 +178,25 @@ public class MainActivity extends Activity implements OnClickListener {
 		{
 			define.debug("makeTableBtn Click!");
 			Intent intent = new Intent( this, MakeActivity.class );
+			
+			if(pFlag){
+				pFlag = true;
+				intent.putExtra("pFlag", pFlag);
+				intent.putExtra("pTravelID", pTravelID);
+				intent.putExtra("pTitle", pTitle);
+				intent.putExtra("pDay", pDay);
+				
+			}
+			
+			else{
+				pFlag = false;
+				intent.putExtra("pFlag", pFlag);
+				intent.putExtra("pTravelID", pTravelID);
+				intent.putExtra("pDayID", pDayID);
+				intent.putExtra("pTitle", pTitle);
+				intent.putExtra("pDay", pDay);
+			}
+			pFlag = true;
 			startActivity(intent);
 		}
 			break;
@@ -210,6 +256,8 @@ public class MainActivity extends Activity implements OnClickListener {
 						intent.putExtra( define.INTENT_KEY_CONTENT_BLUE, items.get(8) );
 						intent.putExtra( define.INTENT_KEY_CONTENT_ALPHA, items.get(9) );
 						intent.putExtra( define.INTENT_KEY_CONTENT, items.get(10) );
+						
+						
 						startActivity(intent);
 					}
 				}
@@ -313,5 +361,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
+
 
 }

@@ -291,7 +291,8 @@ NetworkListener {
 			Toast.makeText(mContext, "스크랩 되었습니다.", Toast.LENGTH_SHORT)
 			.show();
 			dbHandler = DbHandler.open(this);
-			dbHandler.scrapInsert(title, contentId, homepage, imgURL, contentTypeId, addr1, addr2, 
+			
+			dbHandler.scrapInsert(title, Integer.parseInt(contentId), homepage, imgURL, contentTypeId, addr1, addr2, 
 					overview, tel, zipcode, EX, EY);
 			
 			Handler handler = new Handler();

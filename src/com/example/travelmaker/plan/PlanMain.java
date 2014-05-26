@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -19,14 +18,14 @@ import com.example.travelmaker.tour.gpsinfomain.*;
 public class PlanMain extends Activity {
 	public static LinearLayout OverallLayout;
 	LinearLayout linear1, linear2, linear3, linear4, linear5;
-
+	
 	DbHandler dbHandler;
 	Cursor cursor = null;
 	String[] setText;			//(DB) travel에서 가져온 여행제목(title필드)
 	int[] setID;				//(DB) travel에서 가져온 ID(_id필드)
 	int cnt;					//(DB) travel에서 가져온 데이터갯수
 	Button[] btnWord;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,10 +34,10 @@ public class PlanMain extends Activity {
 
 		test();					//여행 ICON 뿌려주는 함수
 	}
-
+	
 	/*여행 등록 -> 여행선택에 등록한 여행들이 각각 ICON으로 생성*/
 	private void test() {
-
+		
 		OverallLayout.setVisibility(View.VISIBLE);
 		//linear마다 ICON 4개담음
 		linear1 = (LinearLayout) findViewById(R.id.linear1);
@@ -46,7 +45,7 @@ public class PlanMain extends Activity {
 		linear3 = (LinearLayout) findViewById(R.id.linear3);
 		linear4 = (LinearLayout) findViewById(R.id.linear4);
 		linear5 = (LinearLayout) findViewById(R.id.linear5);
-
+		
 		/*(DB) travel에 등록된 _id수만큼 ICON(BUTTON)생성*/
 		dbHandler = DbHandler.open(this);
 		cursor = dbHandler.selectAll("travel");
@@ -55,8 +54,8 @@ public class PlanMain extends Activity {
 		setText = new String[cnt];
 		setID = new int[cnt];
 		btnWord = new Button[cnt];
-
-
+		
+		
 		int cnt = 0;						//DB에서 받아온 값을 저장한 배열의 INDEX
 		while (cursor.moveToNext()) {
 
@@ -116,7 +115,7 @@ public class PlanMain extends Activity {
 
 		}
 	};
-
+	
 	/*ICON 길게 클릭시 삭제 구현함수*/
 	OnLongClickListener btnLongClicked = new OnLongClickListener() {
 		@Override
@@ -129,7 +128,7 @@ public class PlanMain extends Activity {
 			builder.setTitle("TRAVELMAKER");
 
 			builder.setMessage("여행을 삭제할까요?");
-
+			
 			/*팝업창에서 확인버튼 누르면 삭제 실행*/
 			builder.setNegativeButton("확인",
 					new DialogInterface.OnClickListener() {
@@ -162,7 +161,7 @@ public class PlanMain extends Activity {
 		}
 
 	};
-
+	
 	/*버튼 삭제 후 화면 초기화*/
 	private void resetLlinear(){
 		OverallLayout.setVisibility(View.INVISIBLE);
@@ -171,16 +170,5 @@ public class PlanMain extends Activity {
 		linear3.removeAllViews();
 		linear4.removeAllViews();
 		linear5.removeAllViews();
-	}
-
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
-		//return super.onKeyDown(keyCode, event);
-		switch(keyCode){
-		case KeyEvent.KEYCODE_BACK:
-			finish();
-		}
-		
-		return true;
 	}
 }
